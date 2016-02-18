@@ -14,7 +14,9 @@ gem 'coffee-rails', '~> 4.1.0'
 
 gem 'mongoid', '~> 5.1.0'
 
+gem 'materialize-sass'
 
+gem 'devise'
 
 
 # Use jquery as the JavaScript library

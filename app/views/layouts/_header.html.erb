@@ -1,0 +1,15 @@
+
+
+<div id="header" class="header">
+    
+    <% if current_user %>
+        Welcome back, <%= current_user.email %>
+        <%= button_to "Sign Out", destroy_user_session_path, method: :delete %>
+        
+    <% else %>
+        Ayy, yer a newbie.
+        <br>
+        
+    <% end %>
+
+</div>
