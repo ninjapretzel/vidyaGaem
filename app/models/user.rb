@@ -35,8 +35,10 @@ class User
     # field :locked_at,       type: Time
 
     has_many :units
-    has_many :monsters
+	has_many :items
     
+	
+	field :max_units, type: Integer, default: 4
     
     
 end

@@ -1,0 +1,27 @@
+Units Used: <%= current_user.units.length %> / <%= current_user.max_units %>
+<br>
+
+<form action="combat" method="post">
+	<% i = 0 %>
+	<% @units.each do |unit| %>
+		<% if unit.in_combat? %>
+			<input type="checkbox" name="party" value=<%= unit.name %> id=test<%= i %> disabled="disabled" >
+			<label for=test<%= i %> class="black-text"><%= unit.name %></label>
+			<div class="chip">
+				Level <%= unit.level %> <%= unit.job %>
+			</div>
+		<% else %>
+			<input type="checkbox" name="party" value=<%= unit.name %> id=test<%= i %> >
+			<label for=test<%= i %> class="black-text"><%= unit.name %></label>
+			<div class="chip">
+				Level <%= unit.level %> <%= unit.job %>
+			</div>
+		<% end %>
+		<br>
+	<% end %>
+</form>
+
+<% if current_user.units.length < current_user.max_units %>
+<%= link_to("New Unit", units_new_path, class:  "btn purple darken-3 white-text") %>
+	
+<% end %>

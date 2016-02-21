@@ -1,0 +1,67 @@
+<div class="card color purple lighten-4">
+	<div class="card-content">
+		<span class="card-title"> <%= @unit.name.capitalize %> </span>
+		<div class="chip">Level <%= @unit.level %> <%= @unit.job.capitalize %></div>
+		<% if @unit.in_combat? %>
+			<div class="chip red">IN COMBAT</div>
+		<% else %>
+			<div class="chip green">IDLE</div>
+		<% end %>
+		<br>
+		Currently in service of <%= @unit.user.email %>
+		<br>
+		<div class="grid">
+			<div class="row">
+				<div class="col s3 green lighten-4 center z-depth-1">Victories: <%= @unit.victories || 0 %></div>
+				<div class="col s3 green lighten-4 center z-depth-1">Losses: <%= @unit.losses || 0 %></div>
+				<div class="col s3 green lighten-4 center z-depth-1">Exp: <%= @unit.exp.floor %> / <%= @unit.tnl.floor %></div>
+				
+			</div>
+
+			<div class="row">
+				<div class="col s4 center green lighten-1 z-depth-1">HP: <%= @unit.hp %> / <%= @unit.mhp %></div>
+				<div class="col s4 center blue lighten-1 z-depth-1">MP: <%= @unit.mp %> / <%= @unit.mmp %></div>
+				<div class="col s4 center red lighten-1 z-depth-1">SP: <%= @unit.sp %> / <%= @unit.msp %></div>
+			</div>
+			
+			Basic Statistics
+			<div class="row">
+				<div class="col s4 center amber lighten-1 z-depth-1 tooltipped" data-tooltip="Physical Offense">Str: <%= @unit.str %> </div>
+				<div class="col s4 center amber lighten-1 z-depth-1 tooltipped" data-tooltip="Balanced Offense">Dex: <%= @unit.dex %> </div>
+				<div class="col s4 center amber lighten-1 z-depth-1 tooltipped" data-tooltip="Magical Offense">Int: <%= @unit.int %> </div>
+				<div class="col s4 center amber lighten-1 z-depth-1 tooltipped" data-tooltip="Physical Defense">Vit: <%= @unit.vit %> </div>
+				<div class="col s4 center amber lighten-1 z-depth-1 tooltipped" data-tooltip="Balanced Defense">Agi: <%= @unit.agi %> </div>
+				<div class="col s4 center amber lighten-1 z-depth-1 tooltipped" data-tooltip="Magical Defense">Wis: <%= @unit.wis %> </div>
+				
+				
+				<div class="col s4 center amber lighten-2 z-depth-1 tooltipped" data-tooltip="Boosts Pdef">Armor: <%= @unit.armor %> </div>
+				<div class="col s4 center amber lighten-2 z-depth-1 tooltipped" data-tooltip="Boosts Mdef">Shell: <%= @unit.shell %> </div>
+				<div class="col s4 center amber lighten-2 z-depth-1 tooltipped" data-tooltip="Boosts Peva">Reflex: <%= @unit.rflex %> </div>
+				<div class="col s4 center amber lighten-2 z-depth-1 tooltipped" data-tooltip="Boosts Meva">Intuition: <%= @unit.intut %> </div>
+				<div class="col s4 center amber lighten-2 z-depth-1 tooltipped" data-tooltip="Boosts Crit">Sight: <%= @unit.sight %> </div>
+				<div class="col s4 center amber lighten-2 z-depth-1 tooltipped" data-tooltip="Boosts Resi">Toughness: <%= @unit.tough %> </div>
+			</div>
+			
+			Derived Statistics
+			<div class="row">
+				<div class="col s3 yellow lighten-3 center z-depth-1 tooltipped" data-tooltip="Physical Damage">Patk: <%= @unit.patk %></div>
+				<div class="col s3 yellow lighten-3 center z-depth-1 tooltipped" data-tooltip="Physical Chance to hit">Pacc: <%= number_to_percentage(100*@unit.pacc) %></div>
+				<div class="col s3 yellow lighten-3 center z-depth-1 tooltipped" data-tooltip="Physical Damage Reduction">Pdef: <%= number_to_percentage(100*@unit.pdef) %></div>
+				<div class="col s3 yellow lighten-3 center z-depth-1 tooltipped" data-tooltip="Chance to dodge Physical attack">Peva: <%= number_to_percentage(100*@unit.peva) %></div>
+				
+				<div class="col s3 yellow lighten-3 center z-depth-1 tooltipped" data-tooltip="Magical Damage">Matk: <%= @unit.matk %></div>
+				<div class="col s3 yellow lighten-3 center z-depth-1 tooltipped" data-tooltip="Magical Chance to hit">Macc: <%= number_to_percentage(100*@unit.macc) %></div>
+				<div class="col s3 yellow lighten-3 center z-depth-1 tooltipped" data-tooltip="Magical Damage Reduction">Mdef: <%= number_to_percentage(100*@unit.mdef) %></div>
+				<div class="col s3 yellow lighten-3 center z-depth-1 tooltipped" data-tooltip="Chance to dodge Magical attack">Meva: <%= number_to_percentage(100*@unit.meva) %></div>
+				
+				<div class="col s3 yellow lighten-3 center z-depth-1 tooltipped" data-tooltip="Attack Speed Multiplier">Aspd: x<%= @unit.aspd %></div>
+				<div class="col s3 yellow lighten-3 center z-depth-1 tooltipped" data-tooltip="Cast Speed Multiplier">Cspd: x<%= @unit.cspd %></div>
+				<div class="col s3 yellow lighten-3 center z-depth-1 tooltipped" data-tooltip="Chance to crit">Crit: <%= number_to_percentage(100*@unit.crit) %></div>
+				<div class="col s3 yellow lighten-3 center z-depth-1 tooltipped" data-tooltip="Chance to avoid taking a crit">Resi: <%= number_to_percentage(100*@unit.resi) %></div>
+				
+			</div>
+			
+			
+		</div>
+	</div>
+</div>

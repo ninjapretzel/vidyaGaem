@@ -1,0 +1,22 @@
+<%= form_for(@unit) do |f| %>
+
+	<div class="field">
+		<div class="chip z-depth-2 blue lighten-3 blue-text text-darken-2">
+			Name
+		</div>
+		<%= f.text_field :name %>
+	</div>
+
+	<div class="field">
+		<div class="chip z-depth-2 blue lighten-3 blue-text text-darken-2">
+			Job - Completely cosmetic
+		</div>
+		<%= f.text_field :job %>
+	</div>
+	
+	<div class="actions">
+		<input type="submit" name="commit" value="SOLD!" class="btn purple darken-3 white-text">
+		
+	</div>
+
+<% end %>
