@@ -1,0 +1,26 @@
+<div class="card deep-orange lighten-5">
+	Participants<br>
+	<% @combat.combatant_names.each do |name| %>
+		<%= name %> 
+		<br>
+	<% end %>
+	
+	
+	CombatLog: <%= @combat.clog.length %>
+	<% @combat.clog.each do |str| %>
+		<%= str %>
+		<br>
+	
+	<% end %>
+	
+	<br> <br>
+	<%= raw @combat.inspect %>
+	<br> <br>
+	<%= raw @combat.units.inspect %>
+	<br> <br>
+	<% @combat.units.each do |c| %>
+		<%= unit.name %>
+	<% end %>
+	
+	
+</div>

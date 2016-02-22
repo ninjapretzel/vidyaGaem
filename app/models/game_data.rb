@@ -405,7 +405,11 @@ $skill_data = {
 
 }
 
-def default_auto_attack() Skill.new($skill_data[:auto_attack]) end
+def default_auto_attack()
+	s = Skill.new
+	s.set_data($skill_data[:auto_attack])
+	s
+end
 
 
 $namegen_data = {

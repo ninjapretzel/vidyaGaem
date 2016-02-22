@@ -1,27 +1,46 @@
 Units Used: <%= current_user.units.length %> / <%= current_user.max_units %>
 <br>
-
-<form action="combat" method="post">
-	<% i = 0 %>
-	<% @units.each do |unit| %>
-		<% if unit.in_combat? %>
-			<input type="checkbox" name="party" value=<%= unit.name %> id=test<%= i %> disabled="disabled" >
-			<label for=test<%= i %> class="black-text"><%= unit.name %></label>
-			<div class="chip">
-				Level <%= unit.level %> <%= unit.job %>
-			</div>
-		<% else %>
-			<input type="checkbox" name="party" value=<%= unit.name %> id=test<%= i %> >
-			<label for=test<%= i %> class="black-text"><%= unit.name %></label>
-			<div class="chip">
-				Level <%= unit.level %> <%= unit.job %>
-			</div>
-		<% end %>
-		<br>
-	<% end %>
-</form>
-
 <% if current_user.units.length < current_user.max_units %>
 <%= link_to("New Unit", units_new_path, class:  "btn purple darken-3 white-text") %>
-	
 <% end %>
+
+
+<%= form_tag("combat", method: "post") do %>
+	<% i = 0 %>
+	<div class="row">
+	<% @units.each do |unit| %>
+		<% if i % 2 == 0 %>
+			<div class="col s12 indigo lighten-5">
+		<% else %>
+			<div class="col s12 purple lighten-5">
+		<% end %>
+
+
+			<% if unit.in_combat? %>
+				<input type="checkbox" name="party" value=<%= unit.name %> id=party<%= i %> disabled="disabled" >
+				<label for=party<%= i %> class="black-text"><%= unit.name %></label>
+				<div class="chip gray">Level <%= unit.level %> <%= unit.job %></div>
+				<div class="chip red">IN COMBAT</div>
+				<div class="chip deep-orange lighten-5">Owner: <%= unit.user.email %></div>
+			<% else %>
+				<input type="checkbox" name=party<%= i %> value=<%= unit.name %> id=party<%= i %> >
+				<label for=party<%= i %> class="black-text"><%= unit.name %></label>
+				<div class="chip gray">Level <%= unit.level %> <%= unit.job %></div>
+				<div class="chip green">IDLE</div>
+				<div class="chip deep-orange lighten-5">Owner: <%= unit.user.email %></div>
+			<% end %>
+
+			<div class="right">
+				<%= link_to "view", unit.path %>
+			</div>
+		</div>
+		<br>
+		<% i += 1 %>
+	<% end %>
+	</div>
+
+	<div class="actions">
+		<input type="submit" name="commit" value="Start Combat" class="btn red darken-2 white-text">
+	</div>
+<% end %>
+

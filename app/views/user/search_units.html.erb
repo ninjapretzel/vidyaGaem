@@ -1,0 +1,34 @@
+
+
+<% i = 0 %>
+<div class="row">
+<% @units.each do |unit| %>
+	<% if i % 2 == 0 %>
+		<div class="col s12 indigo lighten-5">
+	<% else %>
+		<div class="col s12 purple lighten-5">
+	<% end %>
+
+
+		<% if unit.in_combat? %>
+			<input type="checkbox" name="party" value=<%= unit.name %> id=party<%= i %> disabled="disabled" >
+			<label for=party<%= i %> class="black-text"><%= unit.name %></label>
+			<div class="chip gray">Level <%= unit.level %> <%= unit.job %></div>
+			<div class="chip red">IN COMBAT</div>
+			<div class="chip deep-orange lighten-5">Owner: <%= unit.user ? unit.user.email : "Nobody" %></div>
+		<% else %>
+			<input type="checkbox" name=party<%= i %> value=<%= unit.name %> id=party<%= i %> >
+			<label for=party<%= i %> class="black-text"><%= unit.name %></label>
+			<div class="chip gray">Level <%= unit.level %> <%= unit.job %></div>
+			<div class="chip green">IDLE</div>
+			<div class="chip deep-orange lighten-5">Owner: <%= unit.user ? unit.user.email : "Nobody" %></div>
+		<% end %>
+
+		<div class="right">
+			<%= link_to "view", unit.path %>
+		</div>
+	</div>
+	<br>
+	<% i += 1 %>
+<% end %>
+</div>

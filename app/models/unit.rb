@@ -24,11 +24,12 @@ class Unit
 	
 	field :equip, type: Hash, default: ->{ h={}; h }
 	
+	#user this unit belongs to, if any
 	belongs_to :user
-	
 	#Fight this unit is participating in, if any.
-	attr_accessor :combat
-	attr_accessor :auto_attack
+	belongs_to :combat
+	
+	
 	accessors_through :data, vitals
 	accessors_through :data, baseStatsCalc
 	accessors_through :data, combatStats
@@ -36,6 +37,9 @@ class Unit
 	accessors_through :data, intermediate
 	accessors_through :data, [:victories, :losses]
 	accessors_through :data, [:exp, :tnl]
+	
+	def auto_attack; Skill.find(data[:auto_attack]); end
+	def auto_attack=(v) data[:auto_attack] = v._id; v.save; end
 	
 	def Unit.merc
 		m = Unit.new
@@ -58,8 +62,40 @@ class Unit
 		m
 	end
 	
+	def Unit.monster(type, level, combo = 1) 
+		mon = monsters(type)
+		if mon.nil?; return nil; end
+		scales = mon[:stats]
+		
+		elite_rank = 0
+		
+		m = Unit.new
+		
+		m.name = japanese_name + " the " + type.to_s.capitalize
+		m.team = "monster"
+		m.job = (elite_rank > 0) ? "Elite *" + elite_rank : "Mook"
+		m.data[:level] = level
+		
+		level_scale = (level + 10.0) / 10.0
+		base_stat = 2 * level_scale + 2 * elite_rank * level_scale
+		baseStats.each { |stat| m.data[stat] = base_stat * scales.xt(stat, 1) }
+		
+		mul = combine[:mul]
+		m.recalc
+
+		m.data.combine!(scales, mul)
+		m.auto_attack = default_auto_attack
+
+		m.fullheal
+		
+		m.save
+		m
+	end
+	
 	
 	def _id; id.to_s end
+	
+	def path; "/units/"+_id end
 	
 	def in_combat?; !combat.nil? end
 	def dead?; data[:hp] <= 0 end
@@ -85,6 +121,7 @@ class Unit
 				self.timer -= time
 				target = target_one_enemy
 				#puts name + " attacks " + target.name
+				if data[:auto_attack].nil?; auto_attack = default_auto_attack end
 				cast_skill(auto_attack)
 			end
 			
@@ -109,14 +146,18 @@ class Unit
 		#skill.use
 		
 		if (skill.aoe?)
-			targets = skill.supportive? ? target_all_ally : target_all_enemy
-			targets.each do |target|
+			tgs = skill.supportive? ? target_all_ally : target_all_enemy
+			tgs.each do |tg|
+				target = Unit.find(tg)
 				#target.apply_results(use_skill(skill))
 			end
 		else
-			target = skill.supportive? ? target_one_ally : target_one_enemy
+			tg = skill.supportive? ? target_one_ally : target_one_enemy
 			if skill.is_self?; target = self end
-			if target
+			if tg
+				target = combat.units.where(_id: tg)
+				puts self.inspect + "\n\n Attacking: " + target.inspect
+				
 				combat.log name + " uses " + skill.name + " on " + target.name
 				target.apply_results(use_skill(skill))
 			end
@@ -221,7 +262,7 @@ class Unit
 			evaded = evade_roll < (magical ? meva : peva);
 			if evaded; evaded_any = true; next end
 			
-			resistance = data[element.prefix_with("res_")]
+			resistance = data[element.prefix_with("res_")] || 0
 			reduction = 1.0 - resistance.ratio(magical ? mdef : pdef)
 			
 			total_damage += dmg * reduction
@@ -233,6 +274,8 @@ class Unit
 		end
 		total_damage = total_damage.floor
 		
+		puts "\n\n\n" + name + ": HELP IM BEING ASSAULTED!!\n"
+		puts combat.inspect
 		
 		if total_damage <= 0
 			if evaded_any

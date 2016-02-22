@@ -5,8 +5,12 @@ Rails.application.routes.draw do
 	get '/units', to: 'user#units'
 	get '/units/new', to: 'user#new_unit'
 	get '/units/:id', to: 'user#show_unit'
+	get '/units/search/:id', to: 'user#search_units'
 	post '/units', to: 'user#create_unit'
 	
+	
+	get '/combat/:id', to: 'user#show_combat'
+	post '/combat', to: 'user#begin_combat'
 	
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

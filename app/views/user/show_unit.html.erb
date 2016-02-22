@@ -8,7 +8,11 @@
 			<div class="chip green">IDLE</div>
 		<% end %>
 		<br>
-		Currently in service of <%= @unit.user.email %>
+		<% if @unit.user %>
+			Currently in service of <%= @unit.team %> : <%= @unit.user.email %>
+		<% else %>
+			Currently a lone wolf <%= @unit.team %> on their own.
+		<% end %>
 		<br>
 		<div class="grid">
 			<div class="row">
